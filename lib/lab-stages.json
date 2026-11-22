@@ -1,0 +1,488 @@
+{
+ "neem": {
+  "product": "neem",
+  "name": "Neem",
+  "botanical": "Azadirachta indica",
+  "terms": "azadirachta|neem",
+  "mature": "8–12 m",
+  "stages": [
+   {
+    "key": "seed",
+    "day": 0,
+    "label": "Seed",
+    "text": "Fresh neem seeds are sown within weeks of collection, at the start of the monsoon."
+   },
+   {
+    "key": "sprout",
+    "day": 12,
+    "label": "Sprouting",
+    "text": "The shoot breaks the soil in one to two weeks, carrying its first pair of leaves."
+   },
+   {
+    "key": "seedling",
+    "day": 45,
+    "label": "Seedling",
+    "text": "Compound leaves appear. Each seedling moves into its own nursery bag."
+   },
+   {
+    "key": "sapling",
+    "day": 240,
+    "label": "Nursery sapling",
+    "text": "Hardened in full sun to 3–4 ft. This is the size we deliver most."
+   },
+   {
+    "key": "mature",
+    "day": 1460,
+    "label": "Full-grown tree",
+    "text": "A dense evergreen crown and deep roots that shrug off Gujarat summers."
+   },
+   {
+    "key": "flower",
+    "day": 1560,
+    "label": "Flowering",
+    "text": "Small, honey-scented white flowers each March and April."
+   }
+  ]
+ },
+ "gulmohar": {
+  "product": "gulmohar",
+  "name": "Gulmohar",
+  "botanical": "Delonix regia",
+  "terms": "delonix|gulmohar|poinciana|flamboyant",
+  "mature": "8–10 m",
+  "stages": [
+   {
+    "key": "seed",
+    "day": 0,
+    "label": "Seed",
+    "text": "Hard, bean-like seeds from the long pods, soaked before sowing."
+   },
+   {
+    "key": "sprout",
+    "day": 10,
+    "label": "Sprouting",
+    "text": "Germinates fast in the warm monsoon soil."
+   },
+   {
+    "key": "seedling",
+    "day": 45,
+    "label": "Seedling",
+    "text": "Feathery, fern-like leaves unfold. Potted into its own bag."
+   },
+   {
+    "key": "sapling",
+    "day": 300,
+    "label": "Nursery sapling",
+    "text": "4–5 ft, ready for avenues and gardens."
+   },
+   {
+    "key": "mature",
+    "day": 1460,
+    "label": "Full-grown tree",
+    "text": "A wide umbrella canopy that drops its leaves briefly in late winter."
+   },
+   {
+    "key": "flower",
+    "day": 1750,
+    "label": "In flower",
+    "text": "Covered in scarlet flowers from April to June."
+   }
+  ]
+ },
+ "karanj": {
+  "product": "karanj",
+  "name": "Karanj",
+  "botanical": "Millettia pinnata",
+  "terms": "millettia|pongamia|karanj",
+  "mature": "10–15 m",
+  "stages": [
+   {
+    "key": "seed",
+    "day": 0,
+    "label": "Seed",
+    "text": "Seeds from the flat woody pods, sown in the monsoon."
+   },
+   {
+    "key": "seedling",
+    "day": 40,
+    "label": "Seedling",
+    "text": "Glossy leaflets appear. Tolerates saline soil from the start."
+   },
+   {
+    "key": "sapling",
+    "day": 220,
+    "label": "Nursery sapling",
+    "text": "3–4 ft and ready to plant."
+   },
+   {
+    "key": "mature",
+    "day": 1460,
+    "label": "Full-grown tree",
+    "text": "Dense, glossy shade, a favourite for Kutch and coastal sites."
+   },
+   {
+    "key": "flower",
+    "day": 1560,
+    "label": "Flowering",
+    "text": "Soft lilac flowers in spring."
+   },
+   {
+    "key": "fruit",
+    "day": 1650,
+    "label": "Pods",
+    "text": "Flat brown pods follow the flowers."
+   }
+  ]
+ },
+ "mango": {
+  "product": "kesar-mango",
+  "name": "Kesar mango",
+  "botanical": "Mangifera indica",
+  "terms": "mangifera|mango",
+  "mature": "6–8 m",
+  "stages": [
+   {
+    "key": "seed",
+    "day": 0,
+    "label": "Stone",
+    "text": "Rootstock is raised from a mango stone."
+   },
+   {
+    "key": "sprout",
+    "day": 20,
+    "label": "Sprouting",
+    "text": "Coppery new leaves push out of the stone."
+   },
+   {
+    "key": "seedling",
+    "day": 90,
+    "label": "Seedling",
+    "text": "The rootstock is grafted with Kesar wood so it fruits true."
+   },
+   {
+    "key": "sapling",
+    "day": 260,
+    "label": "Grafted sapling",
+    "text": "2–3 ft graft, the size most farmhouses buy."
+   },
+   {
+    "key": "mature",
+    "day": 1460,
+    "label": "Full-grown tree",
+    "text": "A dense dome of dark leaves."
+   },
+   {
+    "key": "flower",
+    "day": 1650,
+    "label": "Flowering",
+    "text": "Panicles of tiny flowers in January."
+   },
+   {
+    "key": "fruit",
+    "day": 1750,
+    "label": "Fruiting",
+    "text": "Kesar mangoes ripen from April to June."
+   }
+  ]
+ },
+ "chikoo": {
+  "product": "chikoo",
+  "name": "Chikoo",
+  "botanical": "Manilkara zapota",
+  "terms": "manilkara|sapodilla|chikoo|sapota",
+  "mature": "5–8 m",
+  "stages": [
+   {
+    "key": "seed",
+    "day": 0,
+    "label": "Seed",
+    "text": "Glossy black seeds from the fruit raise the rootstock."
+   },
+   {
+    "key": "seedling",
+    "day": 60,
+    "label": "Seedling",
+    "text": "Grafted once the stem thickens."
+   },
+   {
+    "key": "sapling",
+    "day": 280,
+    "label": "Grafted sapling",
+    "text": "2–3 ft graft, ready to plant."
+   },
+   {
+    "key": "mature",
+    "day": 1460,
+    "label": "Full-grown tree",
+    "text": "Compact evergreen, easy for backyards."
+   },
+   {
+    "key": "flower",
+    "day": 1700,
+    "label": "Flowering",
+    "text": "Small bell-shaped flowers among the leaves."
+   },
+   {
+    "key": "fruit",
+    "day": 1800,
+    "label": "Fruiting",
+    "text": "Sweet brown fruit through most of the year."
+   }
+  ]
+ },
+ "areca": {
+  "product": "areca-palm",
+  "name": "Areca palm",
+  "botanical": "Dypsis lutescens",
+  "terms": "dypsis|chrysalidocarpus|areca",
+  "mature": "4–6 m",
+  "stages": [
+   {
+    "key": "seed",
+    "day": 0,
+    "label": "Seed",
+    "text": "Small oval seeds, sown in warm, humid beds."
+   },
+   {
+    "key": "seedling",
+    "day": 90,
+    "label": "Seedling",
+    "text": "Grass-like first fronds, grown several to a pot so they clump."
+   },
+   {
+    "key": "sapling",
+    "day": 360,
+    "label": "Nursery clump",
+    "text": "A 3 ft clump of golden canes."
+   },
+   {
+    "key": "mature",
+    "day": 1825,
+    "label": "Full-grown clump",
+    "text": "Arching fronds on many golden stems."
+   },
+   {
+    "key": "flower",
+    "day": 1900,
+    "label": "Flowering",
+    "text": "Branched sprays of small yellow flowers below the leaves."
+   }
+  ]
+ },
+ "foxtail": {
+  "product": "foxtail-palm",
+  "name": "Foxtail palm",
+  "botanical": "Wodyetia bifurcata",
+  "terms": "wodyetia|foxtail",
+  "mature": "8–10 m",
+  "stages": [
+   {
+    "key": "seed",
+    "day": 0,
+    "label": "Seed",
+    "text": "Large fibrous seeds, slow and uneven to sprout."
+   },
+   {
+    "key": "seedling",
+    "day": 120,
+    "label": "Seedling",
+    "text": "Single strap leaves before the first feathered frond."
+   },
+   {
+    "key": "sapling",
+    "day": 540,
+    "label": "Nursery palm",
+    "text": "4 ft with its first full fox-tail fronds."
+   },
+   {
+    "key": "mature",
+    "day": 2190,
+    "label": "Full-grown palm",
+    "text": "A smooth grey trunk under a bushy crown."
+   },
+   {
+    "key": "fruit",
+    "day": 2300,
+    "label": "Fruiting",
+    "text": "Clusters of bright red-orange fruit."
+   }
+  ]
+ },
+ "bougainvillea": {
+  "product": "bougainvillea",
+  "name": "Bougainvillea",
+  "botanical": "Bougainvillea glabra",
+  "terms": "bougainvillea",
+  "mature": "2–4 m",
+  "stages": [
+   {
+    "key": "cutting",
+    "day": 0,
+    "label": "Cutting",
+    "text": "Grown from hardwood cuttings, rooted in the nursery."
+   },
+   {
+    "key": "seedling",
+    "day": 60,
+    "label": "Rooted plant",
+    "text": "New shoots and leaves once the roots take."
+   },
+   {
+    "key": "mature",
+    "day": 365,
+    "label": "Established bush",
+    "text": "Thorny, vigorous growth that can be trained on walls."
+   },
+   {
+    "key": "flower",
+    "day": 420,
+    "label": "In colour",
+    "text": "Magenta bracts through the dry months."
+   }
+  ]
+ },
+ "hibiscus": {
+  "product": "hibiscus",
+  "name": "Hibiscus",
+  "botanical": "Hibiscus rosa-sinensis",
+  "terms": "hibiscus",
+  "mature": "1.5–2.5 m",
+  "stages": [
+   {
+    "key": "cutting",
+    "day": 0,
+    "label": "Cutting",
+    "text": "Rooted from stem cuttings."
+   },
+   {
+    "key": "seedling",
+    "day": 60,
+    "label": "Young plant",
+    "text": "Glossy leaves on fresh shoots."
+   },
+   {
+    "key": "bud",
+    "day": 150,
+    "label": "Budding",
+    "text": "Long buds form at the shoot tips."
+   },
+   {
+    "key": "flower",
+    "day": 180,
+    "label": "Flowering",
+    "text": "Big red flowers almost daily in the warm months."
+   },
+   {
+    "key": "mature",
+    "day": 365,
+    "label": "Full bush",
+    "text": "A dense 2 m shrub."
+   }
+  ]
+ },
+ "ixora": {
+  "product": "ixora",
+  "name": "Ixora",
+  "botanical": "Ixora coccinea",
+  "terms": "ixora",
+  "mature": "1–1.5 m",
+  "stages": [
+   {
+    "key": "cutting",
+    "day": 0,
+    "label": "Cutting",
+    "text": "Rooted from semi-hard cuttings."
+   },
+   {
+    "key": "seedling",
+    "day": 70,
+    "label": "Young plant",
+    "text": "Neat pairs of dark leaves."
+   },
+   {
+    "key": "mature",
+    "day": 300,
+    "label": "Established shrub",
+    "text": "A compact, rounded bush."
+   },
+   {
+    "key": "flower",
+    "day": 330,
+    "label": "Flowering",
+    "text": "Ball-shaped orange clusters."
+   }
+  ]
+ },
+ "duranta": {
+  "product": "golden-duranta",
+  "name": "Golden duranta",
+  "botanical": "Duranta erecta",
+  "terms": "duranta",
+  "mature": "0.6–1.2 m clipped",
+  "stages": [
+   {
+    "key": "cutting",
+    "day": 0,
+    "label": "Cutting",
+    "text": "Rooted cuttings, planted close for a hedge."
+   },
+   {
+    "key": "seedling",
+    "day": 60,
+    "label": "Young plant",
+    "text": "Lime-gold leaves on new shoots."
+   },
+   {
+    "key": "mature",
+    "day": 300,
+    "label": "Clipped hedge",
+    "text": "A bright boundary after one season of trimming."
+   },
+   {
+    "key": "flower",
+    "day": 330,
+    "label": "Flowering",
+    "text": "Lilac flower sprays if left unclipped."
+   },
+   {
+    "key": "fruit",
+    "day": 380,
+    "label": "Golden berries",
+    "text": "Clusters of golden berries, the 'golden dewdrop'."
+   }
+  ]
+ },
+ "snake": {
+  "product": "snake-plant",
+  "name": "Snake plant",
+  "botanical": "Dracaena trifasciata",
+  "terms": "sansevieria|dracaena trifasciata|snake plant",
+  "mature": "0.6–1 m",
+  "stages": [
+   {
+    "key": "cutting",
+    "day": 0,
+    "label": "Leaf cutting",
+    "text": "Propagated from leaf sections or divisions."
+   },
+   {
+    "key": "seedling",
+    "day": 90,
+    "label": "New pups",
+    "text": "New shoots rise from the soil."
+   },
+   {
+    "key": "mature",
+    "day": 720,
+    "label": "Full pot",
+    "text": "Upright banded leaves filling the pot."
+   },
+   {
+    "key": "flower",
+    "day": 780,
+    "label": "Flowering",
+    "text": "Rarely, fragrant white flower spikes."
+   }
+  ]
+ }
+}

@@ -42,7 +42,7 @@ export default function ProductDetail({ p, related }: { p: ProductData; related:
               ))}
             </div>
           )}
-          <Link className="lab-link" href={`/grow-lab/?plant=${p.species}`}>See how a {p.name.toLowerCase().replace(/ \(grafted\)/, "")} grows over 5 years in the Grow Lab →</Link>
+          <Link className="lab-link" href={`/grow-lab/?plant=${p.species}`}>See every growth stage of {p.name.toLowerCase().replace(/ \(grafted\)/, "")} in real photos →</Link>
         </div>
 
         <div style={{ display: "grid", gap: 22 }}>

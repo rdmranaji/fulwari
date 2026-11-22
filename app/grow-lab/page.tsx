@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import GrowLab from "@/components/GrowLab";
 
 export const metadata: Metadata = {
-  title: "Grow Lab: watch a plant grow from seed",
-  description: "Pick a Fulwari plant and fast-forward through the seasons in 3D, from seed to mature tree.",
+  title: "Grow Lab: real photos of every growth stage",
+  description: "Watch neem, gulmohar, mango and nine more plants grow from seed to full size, stage by stage, in real photographs.",
 };
 
 export default function Page() {

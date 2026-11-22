@@ -325,3 +325,48 @@ html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth { scroll-behavior: auto !important; }
 .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
 .lenis.lenis-stopped { overflow: hidden; }
+
+/* ---------- Grow Lab: real-photo journey ---------- */
+.journey { background: var(--night); color: #fff; }
+.j-stage { position: relative; height: calc(100svh - 170px); min-height: 520px; overflow: hidden; }
+.j-photo { position: absolute; inset: 0; }
+.j-photo .ph { position: absolute; inset: 0; background: #142a1c; }
+.j-shade { position: absolute; inset: 0; background: linear-gradient(0deg, rgba(5,14,9,.88) 0%, rgba(5,14,9,.25) 45%, rgba(5,14,9,.55) 100%); }
+.j-top { position: absolute; left: 0; right: 0; top: 92px; display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+.j-top h1 { max-width: 18ch; font-size: clamp(30px, 4vw, 54px); }
+.mute-l { color: #cfdccb; margin-top: 8px; }
+.j-read { text-align: right; display: grid; gap: 4px; font-variant-numeric: tabular-nums; }
+.j-read b { font: 600 clamp(38px, 5.4vw, 78px)/1 var(--f-display); }
+.j-read span { color: #cfdccb; }
+.j-cap { position: absolute; left: 0; right: 0; bottom: 30px; }
+.j-text { font: 600 clamp(22px, 2.6vw, 34px)/1.15 var(--f-display); max-width: 30ch; }
+.j-bar { background: var(--night-2); border-top: 1px solid var(--line-n); padding: 16px 0 22px; }
+.j-species { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding-bottom: 6px; }
+.j-species .chip { flex: none; }
+.j-controls { display: flex; align-items: center; gap: 18px; margin-top: 14px; flex-wrap: wrap; }
+.j-track { position: relative; flex: 1 1 420px; height: 92px; margin: 0 30px; }
+.j-line { position: absolute; left: 0; right: 0; top: 30px; height: 4px; border-radius: 4px; background: rgba(255,255,255,.14); }
+.j-line i { display: block; height: 100%; border-radius: 4px; background: var(--lime); }
+.j-mark { position: absolute; top: 0; transform: translateX(-50%); display: grid; justify-items: center; gap: 6px; background: none; border: 0; padding: 0; color: #9fb7a3; cursor: pointer; z-index: 2; }
+.j-thumb { width: 52px; height: 52px; border-radius: 50%; overflow: hidden; border: 3px solid rgba(255,255,255,.2); display: block; transition: border-color .3s, transform .3s; }
+.j-thumb .ph { width: 100%; height: 100%; }
+.j-mark.on .j-thumb { border-color: var(--lime); }
+.j-mark:hover .j-thumb { transform: scale(1.1); }
+.j-mark em { font-style: normal; font-size: 12px; white-space: nowrap; }
+.j-mark.on em { color: #fff; }
+.j-track input[type=range] { position: absolute; left: 0; right: 0; top: 70px; height: 22px; opacity: .001; }
+.j-speeds { display: flex; gap: 6px; }
+.j-speeds .chip { min-height: 40px; }
+.j-after { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 40px; align-items: start; }
+.j-grid { list-style: none; padding: 0; margin: 22px 0 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
+.j-grid button { width: 100%; padding: 0; border: 0; background: var(--paper-2); border-radius: 16px; overflow: hidden; cursor: pointer; text-align: left; box-shadow: 0 0 0 1px var(--line); }
+.j-gph { aspect-ratio: 1; }
+.j-grid span { display: grid; padding: 10px 12px; }
+.j-grid small { color: var(--mute); }
+.j-video { margin: 0; border-radius: 24px; overflow: hidden; background: #000; position: sticky; top: 100px; }
+.j-video video { width: 100%; display: block; }
+.j-video figcaption { background: var(--paper-2); color: var(--mute); font-size: 13px; padding: 10px 14px; }
+@media (max-width: 900px) { .j-after { grid-template-columns: minmax(0, 1fr); } .j-video { position: relative; top: 0; } }
+@media (max-width: 700px) { .j-stage { height: 62svh; } .j-read { text-align: left; } .j-top { top: 80px; } .j-mark em { display: none; } .j-thumb { width: 40px; height: 40px; } .j-track { flex-basis: 100%; height: 70px; } .j-track input[type=range] { top: 48px; } }
+.journey .chip { background: transparent; color: var(--ink-n); border-color: var(--line-n); }
+.journey .chip[aria-pressed="true"] { background: var(--lime); color: #0b2312; border-color: var(--lime); }

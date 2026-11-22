@@ -99,5 +99,72 @@ for (const s of slots) {
     ok++; console.log(`✓ ${s.key} ← ${picks.map((p) => p.file).join(", ")}`);
   } catch (e) { fail++; console.warn(`✗ ${s.key}: ${e.message}`); }
 }
+
+/* ---------- Grow Lab: real photos of each growth stage, per species ---------- */
+const LAB = JSON.parse(await fs.readFile(path.join(ROOT, "lib", "lab-stages.json"), "utf8"));
+const STAGE_Q = { seed: ["seeds", "seed"], sprout: ["germination", "seedling sprouting"], seedling: ["seedling", "young plant"], sapling: ["sapling", "young tree"],
+  flower: ["flowers", "flower"], fruit: ["fruit", "fruits"], cutting: ["cutting", "propagation"], bud: ["flower bud", "bud"] };
+const STAGE_RE = { seed: /seed|stone|kernel|\bnut/i, sprout: /germinat|sprout|emerg|cotyledon|seedling/i, seedling: /seedling|young|juvenile|nursery|\bpups?\b|plantlet/i,
+  sapling: /sapling|young|juvenile|nursery|plantation|planted/i, flower: /flower|bloom|blossom|inflorescence|panicle|bract/i, fruit: /fruit|pod|berr|drupe|mango|sapodilla/i,
+  cutting: /cutting|propagat|rooting|rooted/i, bud: /\bbuds?\b/i };
+const LAB_AVOID = /(map|diagram|illustration|drawing|herbarium|stamp|plate|blanco|köhler|kohler|bark|insect|butterfl|beetle|caterpillar|moth|disease|logo|\.svg|\.png|\.gif|\.tif)/i;
+async function search(q) {
+  const u = `https://commons.wikimedia.org/w/api.php?action=query&format=json&list=search&srnamespace=6&srlimit=30&srprop=snippet&srsearch=${encodeURIComponent(q)}`;
+  const j = await (await get(u)).json();
+  return (j.query?.search || []).map((r) => ({ title: r.title, text: (r.title + " " + strip(r.snippet)).replace(/_/g, " ") }));
+}
+for (const [sp, d] of Object.entries(LAB)) {
+  const terms = new RegExp(d.terms, "i");
+  const usedHere = new Set();
+  for (const st of d.stages) {
+    const key = `lab:${sp}:${st.key}`;
+    try {
+      let pick;
+      if (st.key === "mature" && result[d.product]?.[0]) { result[key] = [{ ...result[d.product][0], alt: `${d.name}, ${st.label.toLowerCase()}` }]; usedHere.add(result[d.product][0].src); console.log(`✓ ${key} ← product photo`); continue; }
+      for (const q of STAGE_Q[st.key] || [st.key]) {
+        const hits = (await search(`${d.botanical} ${q}`)).filter((h) => /\.jpe?g$/i.test(h.title) && terms.test(h.text) && STAGE_RE[st.key].test(h.text) && !LAB_AVOID.test(h.title));
+        if (!hits.length) continue;
+        const infos = await info(hits.slice(0, 12).map((h) => h.title));
+        pick = infos.find((c) => !usedHere.has(c.file));
+        if (pick) break;
+      }
+      if (!pick) throw new Error("no matching photo");
+      usedHere.add(pick.file);
+      const name = `lab-${sp}-${st.key}`;
+      await download(pick.thumb, path.join(OUT, `${name}.jpg`));
+      await download(pick.thumb.replace(/\/1600px-/, "/800px-"), path.join(OUT, `${name}-sm.jpg`)).catch(() => fs.copyFile(path.join(OUT, `${name}.jpg`), path.join(OUT, `${name}-sm.jpg`)));
+      result[key] = [{ src: `/photos/${name}.jpg`, srcSm: `/photos/${name}-sm.jpg`, w: pick.w, h: pick.h, alt: `${d.name}, ${st.label.toLowerCase()}`, credit: pick.credit, license: pick.license, page: pick.page }];
+      console.log(`✓ ${key} ← ${pick.file}`);
+      await new Promise((r) => setTimeout(r, 300));
+    } catch (e) { console.warn(`✗ ${key}: ${e.message}`); }
+  }
+}
+
+/* ---------- A real germination time-lapse video ---------- */
+try {
+  let done = false;
+  for (const q of ["germination time-lapse filemime:video/webm", "seedling growth time-lapse filemime:video/webm", "germination time lapse filemime:video"]) {
+    const hits = await search(q);
+    for (const h of hits.slice(0, 8)) {
+      const u = `https://commons.wikimedia.org/w/api.php?action=query&format=json&prop=videoinfo&viprop=url|size|derivatives|extmetadata&titles=${encodeURIComponent(h.title)}`;
+      const vi = Object.values((await (await get(u)).json()).query?.pages || {})[0]?.videoinfo?.[0];
+      if (!vi) continue;
+      const lic = vi.extmetadata?.LicenseShortName?.value || "";
+      if (!OK_LICENCE.test(lic)) continue;
+      const der = (vi.derivatives || []).filter((x) => /webm/.test(x.type) && (x.height || 999) <= 540).sort((a, b) => (b.height || 0) - (a.height || 0))[0];
+      const url = der?.src || (vi.size < 25e6 ? vi.url : null);
+      if (!url) continue;
+      const buf = Buffer.from(await (await get(url)).arrayBuffer());
+      if (buf.length > 30e6) continue;
+      await fs.writeFile(path.join(OUT, "timelapse.webm"), buf);
+      result.timelapse = [{ src: "/photos/timelapse.webm", srcSm: "/photos/timelapse.webm", w: vi.width, h: vi.height, alt: "Time-lapse of a seed germinating", credit: strip(vi.extmetadata?.Artist?.value) || "Wikimedia Commons contributor", license: lic, page: vi.descriptionurl }];
+      console.log(`✓ timelapse ← ${h.title} (${Math.round(buf.length / 1e5) / 10} MB)`);
+      done = true; break;
+    }
+    if (done) break;
+  }
+  if (!done) console.warn("✗ timelapse: none found");
+} catch (e) { console.warn(`✗ timelapse: ${e.message}`); }
+
 await fs.writeFile(JSON_OUT, JSON.stringify(result, null, 1) + "\n");
 console.log(`Photos: ${ok} slots filled, ${fail} missing.`);

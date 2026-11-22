@@ -37,9 +37,9 @@ export function LabTeaser() {
     <section className="band dark" style={{ position: "relative", overflow: "hidden" }}>
       <div className="wrap" style={{ display: "grid", gridTemplateColumns: "minmax(0,1.1fr) minmax(0,1fr)", gap: 40, alignItems: "center" }}>
         <div>
-          <span className="kicker">Grow Lab · interactive</span>
-          <SplitTitle className="h-l" text={t("home.labT2", "How big will it get? Try the growth simulator.")} />
-          <p className="lede mute" style={{ marginTop: 18 }}>{t("home.lab2", "A 3D tool that fast-forwards any of our plants from seed to full size, season by season, so you can plan spacing and shade before you buy.")}</p>
+          <span className="kicker">Grow Lab</span>
+          <SplitTitle className="h-l" text={t("home.labT3", "Every stage, from seed to shade, in real photos.")} />
+          <p className="lede mute" style={{ marginTop: 18 }}>{t("home.lab3", "Pick any of our plants and play its life as a time-lapse: seed, sprout, nursery sapling, full-grown, flowering and fruiting.")}</p>
           <Link className="btn lime" href="/grow-lab" style={{ marginTop: 28 }}>{t("cta.lab", "Open the Grow Lab")} →</Link>
         </div>
         <Reveal>
