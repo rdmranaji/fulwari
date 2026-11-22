@@ -104,7 +104,7 @@ for (const s of slots) {
 const LAB = JSON.parse(await fs.readFile(path.join(ROOT, "lib", "lab-stages.json"), "utf8"));
 const STAGE_Q = { seed: ["seeds", "seed"], sprout: ["germination", "seedling sprouting"], seedling: ["seedling", "young plant"], sapling: ["sapling", "young tree"],
   flower: ["flowers", "flower"], fruit: ["fruit", "fruits"], cutting: ["cutting", "propagation"], bud: ["flower bud", "bud"] };
-const STAGE_RE = { seed: /seed|stone|kernel|\bnut/i, sprout: /germinat|sprout|emerg|cotyledon|seedling/i, seedling: /seedling|young|juvenile|nursery|\bpups?\b|plantlet/i,
+const STAGE_RE = { seed: /seed|stone|kernel|\bnut/i, sprout: /germinat|sprout|emerg|cotyledon|seedling/i, seedling: /seedling|juvenile|nursery|\bpups?\b|plantlet/i,
   sapling: /sapling|young|juvenile|nursery|plantation|planted/i, flower: /flower|bloom|blossom|inflorescence|panicle|bract/i, fruit: /fruit|pod|berr|drupe|mango|sapodilla/i,
   cutting: /cutting|propagat|rooting|rooted/i, bud: /\bbuds?\b/i };
 const LAB_AVOID = /(map|diagram|illustration|drawing|herbarium|stamp|plate|blanco|köhler|kohler|bark|insect|butterfl|beetle|caterpillar|moth|disease|logo|\.svg|\.png|\.gif|\.tif)/i;
@@ -120,6 +120,8 @@ const LAB_AVOID2 = /\bants?\b|calliandra|\bnight\b|dried herbs|herbal|market|sta
 for (const [sp, d] of Object.entries(LAB)) {
   const terms = new RegExp(d.terms, "i");
   const genus = d.botanical.split(" ")[0];
+  const epithet = d.botanical.split(" ")[1];
+  const exact = new RegExp([epithet, ...d.terms.split("|").filter((x) => x.toLowerCase() !== genus.toLowerCase())].filter(Boolean).join("|"), "i");
   const common = d.terms.split("|").filter((x) => !x.includes(" ") && x.toLowerCase() !== genus.toLowerCase()).slice(0, 2);
   const isPalm = sp === "areca" || sp === "foxtail";
   const usedHere = new Set();
@@ -130,17 +132,20 @@ for (const [sp, d] of Object.entries(LAB)) {
       if (st.key === "mature" && result[d.product]?.[0]) { result[key] = [{ ...result[d.product][0], alt: `${d.name}, ${st.label.toLowerCase()}` }]; usedHere.add(result[d.product][0].file || result[d.product][0].src); console.log(`✓ ${key} ← product photo`); continue; }
       const words = STAGE_Q[st.key] || [st.key];
       const queries = [...words.map((w) => `${d.botanical} ${w}`), ...words.map((w) => `${genus} ${w}`), ...common.flatMap((c) => words.map((w) => `${c} ${w}`))];
-      const ok = (h, needTerms) => /\.jpe?g$/i.test(h.title) && (!needTerms || terms.test(h.text)) && STAGE_RE[st.key].test(TITLE_ONLY.has(st.key) ? h.title : h.text) && !LAB_AVOID.test(h.title) && !LAB_AVOID2.test(h.text);
-      for (const q of queries) {
-        const hits = (await search(q)).filter((h) => ok(h, true));
-        if (!hits.length) continue;
-        pick = (await info(hits.slice(0, 12).map((h) => h.title))).find((c) => !usedHere.has(c.file));
+      const ok = (h, mode) => /\.jpe?g$/i.test(h.title) && (mode === "any" || (mode === "exact" ? exact : terms).test(h.text)) && STAGE_RE[st.key].test(TITLE_ONLY.has(st.key) ? h.title : h.text) && !LAB_AVOID.test(h.title) && !LAB_AVOID2.test(h.text);
+      for (const mode of ["exact", "genus"]) {
+        for (const q of queries) {
+          const hits = (await search(q)).filter((h) => ok(h, mode));
+          if (!hits.length) continue;
+          pick = (await info(hits.slice(0, 12).map((h) => h.title))).find((c) => !usedHere.has(c.file));
+          if (pick) { generic = mode === "genus"; break; }
+        }
         if (pick) break;
       }
       if (!pick) {
         const gq = (isPalm ? PALM_GENERIC[st.key] : null) || GENERIC[st.key] || [];
         for (const q of gq) {
-          const hits = (await search(q)).filter((h) => ok(h, false));
+          const hits = (await search(q)).filter((h) => ok(h, "any"));
           if (!hits.length) continue;
           pick = (await info(hits.slice(0, 12).map((h) => h.title))).find((c) => !usedHere.has(c.file));
           if (pick) { generic = true; break; }
