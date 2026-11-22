@@ -26,6 +26,9 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - name: Fetch freely licensed photos (Wikimedia Commons)
+        run: npm run photos
+        continue-on-error: true
       - name: Build static site
         run: npm run export
         env:

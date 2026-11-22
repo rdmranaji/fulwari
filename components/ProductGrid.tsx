@@ -1,32 +1,29 @@
 "use client";
-import dynamic from "next/dynamic";
 import Link from "next/link";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import type { CategoryData, ProductData } from "@/lib/catalog";
 import { inr } from "@/lib/pricing";
 import { useLang, useT } from "@/lib/i18n";
 import { useShop } from "@/lib/store";
-import { Glyph } from "./Glyph";
+import { photos } from "@/lib/photos";
+import { Photo } from "./Photo";
 
-const PlantView = dynamic(() => import("./three/CardViews").then((m) => m.PlantView), { ssr: false });
-const ViewsCanvas = dynamic(() => import("./three/CardViews").then((m) => m.ViewsCanvas), { ssr: false });
-
-function Card({ p, i, gl }: { p: ProductData; i: number; gl: boolean }) {
+function Card({ p, i }: { p: ProductData; i: number }) {
   const lang = useLang();
   const t = useT();
   const add = useShop((s) => s.add);
-  const growing = useRef(false);
   const v = p.variants[0];
-  const big = p.variants[p.variants.length - 1];
+  const ph = photos(p.slug);
   const from = Math.min(...p.variants.map((x) => x.priceInr));
   const [justAdded, setJustAdded] = useState(false);
   return (
     <motion.article layout initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-60px" }} transition={{ duration: 0.6, delay: (i % 3) * 0.08 }}
-      className="card" onMouseEnter={() => (growing.current = true)} onMouseLeave={() => (growing.current = false)} onFocus={() => (growing.current = true)} onBlur={() => (growing.current = false)}>
+      className="card">
       <Link href={`/shop/${p.slug}`} aria-label={p.name} style={{ position: "absolute", inset: 0, zIndex: 3 }} />
       <div className="viz">
-        {gl ? <PlantView species={p.species} days={big.ageDays} growing={growing} /> : <div className="v3d" style={{ display: "grid", placeItems: "center" }}><Glyph species={p.species} size={140} /></div>}
+        <Photo p={ph[0]} className="card-ph" sizes="(max-width:640px) 100vw, (max-width:1100px) 50vw, 33vw" fallback={p.species} />
+        {ph[1] && <Photo p={ph[1]} className="card-ph alt" sizes="(max-width:640px) 100vw, (max-width:1100px) 50vw, 33vw" fallback={p.species} />}
         <span className="tag pill">{p.featured ? "Bestseller" : p.botanical}</span>
       </div>
       <div className="body">
@@ -52,11 +49,6 @@ export default function ProductGrid({ products, categories, filter = true, limit
   const lang = useLang();
   const [cat, setCat] = useState("all");
   const [sort, setSort] = useState("featured");
-  const root = useRef<HTMLDivElement>(null);
-  const [ready, setReady] = useState(false);
-  useEffect(() => {
-    try { const c = document.createElement("canvas"); setReady(!!(c.getContext("webgl2") || c.getContext("webgl"))); } catch { setReady(false); }
-  }, []);
   const list = useMemo(() => {
     let l = products.filter((p) => cat === "all" || p.category === cat);
     const min = (p: ProductData) => Math.min(...p.variants.map((v) => v.priceInr));
@@ -66,7 +58,7 @@ export default function ProductGrid({ products, categories, filter = true, limit
     return limit ? l.slice(0, limit) : l;
   }, [products, cat, sort, limit]);
   return (
-    <div ref={root}>
+    <div>
       {filter && (
         <div style={{ display: "flex", flexWrap: "wrap", gap: 10, alignItems: "center", justifyContent: "space-between", marginBottom: 26 }}>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }} role="group" aria-label="Filter by category">
@@ -83,10 +75,9 @@ export default function ProductGrid({ products, categories, filter = true, limit
       )}
       <motion.div className="cards" layout>
         <AnimatePresence>
-          {list.map((p, i) => <Card key={p.slug} p={p} i={i} gl={ready} />)}
+          {list.map((p, i) => <Card key={p.slug} p={p} i={i} />)}
         </AnimatePresence>
       </motion.div>
-      {ready && <ViewsCanvas eventSource={root} />}
     </div>
   );
 }

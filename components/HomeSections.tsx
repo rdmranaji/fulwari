@@ -1,9 +1,8 @@
 "use client";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { useT } from "@/lib/i18n";
 import { Counter, Reveal, SplitTitle } from "./Motion";
-import { Glyph } from "./Glyph";
+import { Photo } from "./Photo";
 
 export function Doors() {
   const t = useT();
@@ -13,17 +12,17 @@ export function Doors() {
         <SplitTitle className="h-l" text={t("home.buyT", "Two ways to buy from Fulwari")} />
         <div className="grid-2" style={{ marginTop: 36 }}>
           <Reveal className="door b2c">
+            <Photo slot="door-b2c" className="door-ph" sizes="(max-width:760px) 100vw, 50vw" fallback="bougainvillea" />
             <span className="kicker" style={{ color: "#7a4d00" }}>Homes, farmhouses and societies in Gujarat</span>
             <h3 className="h-m">{t("home.b2cT", "Order online. We deliver, and plant it if you like.")}</h3>
             <p>{t("home.b2c", "Shade trees, palms, fruit and flowering plants in nursery bags, delivered across Gujarat. Free delivery over ₹5,000.")}</p>
-            <div className="art"><Glyph species="bougainvillea" size={320} /></div>
             <Link className="btn green" href="/shop">{t("cta.shop", "Shop plants")} →</Link>
           </Reveal>
           <Reveal className="door b2b" delay={0.1}>
+            <Photo slot="door-b2b" className="door-ph" sizes="(max-width:760px) 100vw, 50vw" fallback="neem" />
             <span className="kicker">Industries, landscapers, nurseries and dealers</span>
             <h3 className="h-m">{t("home.b2bT", "Bulk supply anywhere in India.")}</h3>
             <p style={{ color: "#cfe3c8" }}>{t("home.b2b", "Green belts, townships and campuses. Orders from ₹1 lakh, with variety advice and after-care guidance for your team.")}</p>
-            <div className="art"><Glyph species="neem" size={320} /></div>
             <Link className="btn" href="/bulk">{t("cta.quote", "Get a bulk quote")} →</Link>
           </Reveal>
         </div>
@@ -38,13 +37,13 @@ export function LabTeaser() {
     <section className="band dark" style={{ position: "relative", overflow: "hidden" }}>
       <div className="wrap" style={{ display: "grid", gridTemplateColumns: "minmax(0,1.1fr) minmax(0,1fr)", gap: 40, alignItems: "center" }}>
         <div>
-          <span className="kicker">Grow Lab</span>
-          <SplitTitle className="h-l" text={t("home.labT", "Fast-forward any plant, season by season.")} />
-          <p className="lede mute" style={{ marginTop: 18 }}>{t("home.lab", "Pick a plant and watch it go from seed to full size: monsoon rain, winter leaf-drop and summer flowers included. See how big it will get before you buy.")}</p>
+          <span className="kicker">Grow Lab · interactive</span>
+          <SplitTitle className="h-l" text={t("home.labT2", "How big will it get? Try the growth simulator.")} />
+          <p className="lede mute" style={{ marginTop: 18 }}>{t("home.lab2", "A 3D tool that fast-forwards any of our plants from seed to full size, season by season, so you can plan spacing and shade before you buy.")}</p>
           <Link className="btn lime" href="/grow-lab" style={{ marginTop: 28 }}>{t("cta.lab", "Open the Grow Lab")} →</Link>
         </div>
         <Reveal>
-          <TimeStrip />
+          <Photo slot="story-sprout" className="lab-ph" sizes="(max-width:860px) 100vw, 45vw" fallback="neem" />
         </Reveal>
       </div>
       <style>{`@media(max-width:860px){.dark .wrap[style]{grid-template-columns:minmax(0,1fr)!important}}`}</style>
@@ -52,22 +51,6 @@ export function LabTeaser() {
   );
 }
 
-function TimeStrip() {
-  const stages = [["Day 0", 0.12], ["Day 21", 0.22], ["Day 120", 0.42], ["Year 1", 0.62], ["Year 2", 0.82], ["Year 4", 1]] as const;
-  return (
-    <div style={{ display: "grid", gridTemplateColumns: "repeat(6, minmax(0,1fr))", alignItems: "end", gap: 6, height: 300, borderBottom: "2px solid var(--line-n)" }}>
-      {stages.map(([l, s], i) => (
-        <motion.div key={l} initial={{ scaleY: 0, opacity: 0 }} whileInView={{ scaleY: 1, opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.15 * i, duration: 0.8, ease: [0.2, 0.8, 0.2, 1] }}
-          style={{ transformOrigin: "50% 100%", display: "grid", justifyItems: "center", gap: 8 }}>
-          <div style={{ width: "100%", height: 250 * s, display: "grid", placeItems: "end center" }}>
-            <Glyph species={i < 2 ? "neem" : "gulmohar"} size={Math.max(28, 120 * s)} />
-          </div>
-          <span style={{ fontSize: 13, color: "var(--mute-n)", whiteSpace: "nowrap" }}>{l}</span>
-        </motion.div>
-      ))}
-    </div>
-  );
-}
 
 export function Proof() {
   const t = useT();
@@ -93,13 +76,14 @@ export function Proof() {
 export function VisitBand() {
   const t = useT();
   return (
-    <section className="band" style={{ background: "var(--lime)" }}>
-      <div className="wrap" style={{ display: "flex", flexWrap: "wrap", gap: 24, alignItems: "end", justifyContent: "space-between" }}>
+    <section className="band visit-ph">
+      <Photo slot="visit" className="visit-bg" sizes="100vw" fallback="areca" />
+      <div className="wrap" style={{ position: "relative", display: "flex", flexWrap: "wrap", gap: 24, alignItems: "end", justifyContent: "space-between" }}>
         <div style={{ maxWidth: 720 }}>
           <SplitTitle className="h-l" text="Walk the rows before you choose." />
           <p className="lede" style={{ marginTop: 14 }}>Our Anand nursery on NH48 is open every day, 8 AM to 6 PM. Book a slot and a gardener will walk you round.</p>
         </div>
-        <Link className="btn green" href="/contact">{t("cta.visit", "Book a nursery visit")} →</Link>
+        <Link className="btn" href="/contact">{t("cta.visit", "Book a nursery visit")} →</Link>
       </div>
     </section>
   );

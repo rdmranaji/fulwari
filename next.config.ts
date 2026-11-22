@@ -7,7 +7,7 @@ const basePath = isExport ? process.env.NEXT_BASE_PATH || "" : "";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  env: { NEXT_PUBLIC_STATIC: isExport ? "1" : "0" },
+  env: { NEXT_PUBLIC_STATIC: isExport ? "1" : "0", NEXT_PUBLIC_BASE_PATH: basePath },
   ...(isExport ? { output: "export", trailingSlash: true, images: { unoptimized: true }, basePath, assetPrefix: basePath || undefined } : {}),
 };
 

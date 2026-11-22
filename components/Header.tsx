@@ -25,7 +25,7 @@ export function Header() {
   useEffect(() => { document.documentElement.lang = lang; }, [lang]);
   const darkTop = DARK_TOP.includes(path.replace(/\/$/, "") || "/");
   useEffect(() => {
-    const on = () => setSolid(window.scrollY > (path === "/" ? window.innerHeight * 5.3 : 24));
+    const on = () => setSolid(window.scrollY > (path === "/" ? window.innerHeight * 0.8 : 24));
     on(); window.addEventListener("scroll", on, { passive: true }); return () => window.removeEventListener("scroll", on);
   }, [path]);
   useEffect(() => setMenu(false), [path]);

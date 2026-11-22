@@ -15,7 +15,7 @@ export default async function Shop() {
         <div className="wrap">
           <span className="kicker">Delivered across Gujarat · grown in Anand</span>
           <h1 className="h-xl" style={{ marginTop: 10 }}>Shop plants</h1>
-          <p className="lede mute" style={{ marginTop: 14 }}>Every plant here is alive in 3D. Hover one to watch it grow from seedling to the biggest size we deliver. Free delivery on orders over ₹5,000.</p>
+          <p className="lede mute" style={{ marginTop: 14 }}>Raised at our Anand nursery and delivered in nursery bags across Gujarat. Free delivery on orders over ₹5,000.</p>
         </div>
       </section>
       <section style={{ paddingBottom: 100 }}>

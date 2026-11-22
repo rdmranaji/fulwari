@@ -37,6 +37,10 @@ db/                      Drizzle schema, client, seed, SQL migrations
 lib/                     catalogue, pricing rules, validation (zod), i18n, cart store (zustand), WhatsApp messages
 ```
 
+## Photos
+
+The site uses freely licensed photographs from Wikimedia Commons until Fulwari's own shoot. `npm run photos` (also run by the GitHub Pages build) picks photos for each slot in `lib/photos.ts`, keeps only CC BY / BY-SA / CC0 / public-domain files, saves them to `public/photos/` and writes the credits to `lib/photos.generated.json`, which feeds the `/credits` page. To use Fulwari's own photos, drop them into `public/photos/` and point the slot entries in `lib/photos.generated.json` at them.
+
 ## Run locally
 
 ```bash
@@ -44,6 +48,7 @@ cp .env.example .env            # set DATABASE_URL and ADMIN_TOKEN
 npm install
 npm run db:migrate              # applies db/migrations to PostgreSQL
 npm run db:seed                 # loads the 12-product sample catalogue
+npm run photos                  # downloads the photos (needs internet)
 npm run dev                     # http://localhost:3000
 ```
 

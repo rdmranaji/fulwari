@@ -1,19 +1,17 @@
 "use client";
-import dynamic from "next/dynamic";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import type { ProductData } from "@/lib/catalog";
 import { inr } from "@/lib/pricing";
 import { useLang, useT } from "@/lib/i18n";
 import { useShop } from "@/lib/store";
-import type { Clock } from "./three/GrowScene";
-import type { GrowthInfo } from "./three/plantGen";
 import { ageLabel } from "./three/species";
+import { photos } from "@/lib/photos";
+import { Photo } from "./Photo";
 import ProductGrid from "./ProductGrid";
 import { Reveal } from "./Motion";
 
-const GrowScene = dynamic(() => import("./three/GrowScene"), { ssr: false, loading: () => <div style={{ position: "absolute", inset: 0, background: "#cfe3c4" }} /> });
 
 export default function ProductDetail({ p, related }: { p: ProductData; related: ProductData[] }) {
   const t = useT();
@@ -23,27 +21,28 @@ export default function ProductDetail({ p, related }: { p: ProductData; related:
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
   const v = p.variants[vi];
-  const clock = useRef<Clock>({ days: 4, target: v.ageDays, playing: false, speed: 0, max: 99999, loop: false }).current;
-  const [when, setWhen] = useState<number>(0);
-  const info = useRef<GrowthInfo>({ g: 0, height: 0, doy: 0 });
-  const [read, setRead] = useState({ d: 0, h: 0 });
-  useEffect(() => { clock.target = v.ageDays + when * 365; }, [v.ageDays, when, clock]);
-  useEffect(() => { const id = setInterval(() => setRead({ d: clock.days, h: info.current.height }), 100); return () => clearInterval(id); }, [clock]);
-  const hText = read.h < 1 ? `${Math.round(read.h * 100)} cm` : `${read.h.toFixed(1)} m`;
+  const gallery = photos(p.slug);
+  const [gi, setGi] = useState(0);
 
   return (
     <>
       <div className="wrap pdp">
-        <div className="viewer">
-          <GrowScene species={p.species} clock={clock} rain={false} dayCycle={false} onInfo={(i) => (info.current = i)} frame={2.4} />
-          <div className="ctrl">
-            <span className="read">{when === 0 ? "As delivered" : `${when} yr after planting`} · {hText}</span>
-            <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }} role="group" aria-label={t("p.see", "See how big it will get")}>
-              {[[0, t("p.today", "Delivered")], [1, t("p.y1", "+1 yr")], [3, t("p.y3", "+3 yrs")], [5, t("p.y5", "+5 yrs")]].map(([y, l]) => (
-                <button key={y} className="chip" aria-pressed={when === y} onClick={() => setWhen(y as number)}>{l}</button>
+        <div className="gallery">
+          <div className="g-main">
+            <AnimatePresence mode="popLayout" initial={false}>
+              <motion.div key={gi} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }} style={{ position: "absolute", inset: 0 }}>
+                <Photo p={gallery[gi]} priority sizes="(max-width:900px) 100vw, 55vw" fallback={p.species} />
+              </motion.div>
+            </AnimatePresence>
+          </div>
+          {gallery.length > 1 && (
+            <div className="g-thumbs" role="group" aria-label="Photos">
+              {gallery.map((g, i) => (
+                <button key={g.src} aria-pressed={i === gi} onClick={() => setGi(i)} aria-label={`Photo ${i + 1}`}><Photo p={g} sizes="120px" /></button>
               ))}
             </div>
-          </div>
+          )}
+          <Link className="lab-link" href={`/grow-lab/?plant=${p.species}`}>See how a {p.name.toLowerCase().replace(/ \(grafted\)/, "")} grows over 5 years in the Grow Lab →</Link>
         </div>
 
         <div style={{ display: "grid", gap: 22 }}>
@@ -58,7 +57,7 @@ export default function ProductDetail({ p, related }: { p: ProductData; related:
             <p style={{ fontWeight: 700, marginBottom: 10 }}>{t("p.size", "Choose a size")}</p>
             <div className="variants" role="radiogroup" aria-label="Size">
               {p.variants.map((x, i) => (
-                <button key={x.sku} className="variant" role="radio" aria-checked={i === vi} aria-pressed={i === vi} onClick={() => { setVi(i); setWhen(0); }}>
+                <button key={x.sku} className="variant" role="radio" aria-checked={i === vi} aria-pressed={i === vi} onClick={() => setVi(i)}>
                   <span className="dot" />
                   <span><b>{x.label}</b><br /><span className="mute" style={{ fontSize: 14 }}>{x.bag} · about {ageLabel(x.ageDays).replace("Day ", "") } old</span></span>
                   <b className="nb">{inr(x.priceInr)}</b>
@@ -87,7 +86,7 @@ export default function ProductDetail({ p, related }: { p: ProductData; related:
             <div><b>{t("p.mature", "Full size")}</b>{p.matureSize}</div>
             <div><b>{t("p.growth", "Growth")}</b>{p.growth}</div>
           </div>
-          <p className="mute" style={{ fontSize: 13 }}>3D preview shows typical growth from a 1 July planting in central Gujarat; real plants vary with soil, water and care. Currently showing {ageLabel(read.d).toLowerCase()} from sowing.</p>
+          {gallery[gi] && <p className="mute" style={{ fontSize: 12 }}>Photo: {gallery[gi].credit}, {gallery[gi].license}, via Wikimedia Commons. Representative of the species; Fulwari's own stock photos to follow.</p>}
         </div>
       </div>
       {related.length > 0 && (

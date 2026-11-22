@@ -32,6 +32,11 @@ export default function GrowLab({ initial = "gulmohar" as SpeciesKey }) {
     return () => clearInterval(id);
   }, [clock]);
 
+  useEffect(() => {
+    const q = new URLSearchParams(location.search).get("plant") as SpeciesKey | null;
+    if (q && SPECIES[q]) pick(q);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const pick = (k: SpeciesKey) => {
     setSpecies(k);
     clock.days = 0; clock.max = SPECIES[k].matureDays + 365; clock.playing = true;
