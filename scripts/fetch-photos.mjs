@@ -12,7 +12,7 @@ const UA = process.env.PHOTO_USER_AGENT || "FulwariWebsiteBuild/1.0 (+https://gi
 const OK_LICENCE = /^(cc[ -]by|cc0|public domain|pd)/i;
 const SKIP = /(map|distribution|range|diagram|illustration|drawing|köhler|kohler|botanical|herbarium|stamp|logo|icon|svg|chart|\.png$|\.gif$|\.tif)/i;
 // close-ups and oddities that don't sell a plant
-const AVOID = /(bark|pollen|grain|boulder|comparison|\bbud\b|\bnight\b|wood|stem section|cross.?section|orchid|leaf scar|fully opened|seeds?\b|seedpod|pods?\b|insect|caterpillar|beetle|disease|close-?up|leaves|yellow poinciana|peltophorum|gall|swallowtail|papilio|butterfl|blanco|plate)/i;
+const AVOID = /(bark|pollen|grain|boulder|comparison|\bbud\b|\bnight\b|wood|stem section|cross.?section|orchid|leaf scar|fully opened|seeds?\b|seedpod|pods?\b|insect|caterpillar|beetle|disease|close-?up|leaves|yellow poinciana|peltophorum|gall|swallowtail|papilio|butterfl|blanco|plate|pentas)/i;
 
 const src = await fs.readFile(path.join(ROOT, "lib", "photos.ts"), "utf8");
 const slots = [...src.matchAll(/"?([\w-]+)"?:\s*\{\s*wiki:\s*"([^"]+)",\s*index:\s*(\d+),\s*alt:\s*"([^"]+)"([^}]*)\}/g)]
