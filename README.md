@@ -4,6 +4,8 @@ Next.js 15 (App Router, React 19) · TypeScript · React Three Fiber · Framer M
 
 Built by Global Web Guru for Fulwari, plant growers in Anand, Gujarat.
 
+**Live preview:** https://rdmranaji.github.io/fulwari/ (static version, published from `main` by GitHub Actions)
+
 ## What makes it different
 
 - **Procedural 3D plants that grow.** Every plant is generated in the browser from botanical growth rules (`components/three/plantGen.ts`). Twelve species branch, leaf out, flower and fruit by season, starting from a 1 July (monsoon) sowing.
