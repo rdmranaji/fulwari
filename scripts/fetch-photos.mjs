@@ -113,28 +113,46 @@ async function search(q) {
   const j = await (await get(u)).json();
   return (j.query?.search || []).map((r) => ({ title: r.title, text: (r.title + " " + strip(r.snippet)).replace(/_/g, " ") }));
 }
+const TITLE_ONLY = new Set(["sprout", "seedling", "sapling", "cutting"]);
+const GENERIC = { cutting: ["rooted cutting", "stem cuttings rooting", "plant cuttings propagation"], sapling: ["tree sapling nursery", "sapling"], seedling: [], seed: [] };
+const PALM_GENERIC = { seed: ["palm seeds"], seedling: ["palm seedling", "palm seedlings"], sapling: ["young palm nursery"] };
+const LAB_AVOID2 = /\bants?\b|calliandra|\bnight\b|dried herbs|herbal|market|stall/i;
 for (const [sp, d] of Object.entries(LAB)) {
   const terms = new RegExp(d.terms, "i");
+  const genus = d.botanical.split(" ")[0];
+  const common = d.terms.split("|").filter((x) => !x.includes(" ") && x.toLowerCase() !== genus.toLowerCase()).slice(0, 2);
+  const isPalm = sp === "areca" || sp === "foxtail";
   const usedHere = new Set();
   for (const st of d.stages) {
     const key = `lab:${sp}:${st.key}`;
     try {
-      let pick;
-      if (st.key === "mature" && result[d.product]?.[0]) { result[key] = [{ ...result[d.product][0], alt: `${d.name}, ${st.label.toLowerCase()}` }]; usedHere.add(result[d.product][0].src); console.log(`✓ ${key} ← product photo`); continue; }
-      for (const q of STAGE_Q[st.key] || [st.key]) {
-        const hits = (await search(`${d.botanical} ${q}`)).filter((h) => /\.jpe?g$/i.test(h.title) && terms.test(h.text) && STAGE_RE[st.key].test(h.text) && !LAB_AVOID.test(h.title));
+      let pick, generic = false;
+      if (st.key === "mature" && result[d.product]?.[0]) { result[key] = [{ ...result[d.product][0], alt: `${d.name}, ${st.label.toLowerCase()}` }]; usedHere.add(result[d.product][0].file || result[d.product][0].src); console.log(`✓ ${key} ← product photo`); continue; }
+      const words = STAGE_Q[st.key] || [st.key];
+      const queries = [...words.map((w) => `${d.botanical} ${w}`), ...words.map((w) => `${genus} ${w}`), ...common.flatMap((c) => words.map((w) => `${c} ${w}`))];
+      const ok = (h, needTerms) => /\.jpe?g$/i.test(h.title) && (!needTerms || terms.test(h.text)) && STAGE_RE[st.key].test(TITLE_ONLY.has(st.key) ? h.title : h.text) && !LAB_AVOID.test(h.title) && !LAB_AVOID2.test(h.text);
+      for (const q of queries) {
+        const hits = (await search(q)).filter((h) => ok(h, true));
         if (!hits.length) continue;
-        const infos = await info(hits.slice(0, 12).map((h) => h.title));
-        pick = infos.find((c) => !usedHere.has(c.file));
+        pick = (await info(hits.slice(0, 12).map((h) => h.title))).find((c) => !usedHere.has(c.file));
         if (pick) break;
+      }
+      if (!pick) {
+        const gq = (isPalm ? PALM_GENERIC[st.key] : null) || GENERIC[st.key] || [];
+        for (const q of gq) {
+          const hits = (await search(q)).filter((h) => ok(h, false));
+          if (!hits.length) continue;
+          pick = (await info(hits.slice(0, 12).map((h) => h.title))).find((c) => !usedHere.has(c.file));
+          if (pick) { generic = true; break; }
+        }
       }
       if (!pick) throw new Error("no matching photo");
       usedHere.add(pick.file);
       const name = `lab-${sp}-${st.key}`;
       await download(pick.thumb, path.join(OUT, `${name}.jpg`));
       await download(pick.thumb.replace(/\/1600px-/, "/800px-"), path.join(OUT, `${name}-sm.jpg`)).catch(() => fs.copyFile(path.join(OUT, `${name}.jpg`), path.join(OUT, `${name}-sm.jpg`)));
-      result[key] = [{ src: `/photos/${name}.jpg`, srcSm: `/photos/${name}-sm.jpg`, w: pick.w, h: pick.h, alt: `${d.name}, ${st.label.toLowerCase()}`, credit: pick.credit, license: pick.license, page: pick.page }];
-      console.log(`✓ ${key} ← ${pick.file}`);
+      result[key] = [{ src: `/photos/${name}.jpg`, srcSm: `/photos/${name}-sm.jpg`, w: pick.w, h: pick.h, alt: generic ? `${st.label} (typical example)` : `${d.name}, ${st.label.toLowerCase()}`, credit: pick.credit, license: pick.license, page: pick.page, ...(generic ? { generic: true } : {}) }];
+      console.log(`✓ ${key} ← ${generic ? "[typical] " : ""}${pick.file}`);
       await new Promise((r) => setTimeout(r, 300));
     } catch (e) { console.warn(`✗ ${key}: ${e.message}`); }
   }

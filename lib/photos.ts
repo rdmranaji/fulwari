@@ -4,7 +4,7 @@
 // Replace any slot with Fulwari's own photos later by dropping a file in public/photos and editing generated.json.
 import generated from "./photos.generated.json";
 
-export type Photo = { src: string; srcSm: string; w: number; h: number; alt: string; credit: string; license: string; page: string };
+export type Photo = { src: string; srcSm: string; w: number; h: number; alt: string; credit: string; license: string; page: string; generic?: boolean };
 
 export const PHOTO_SLOTS: Record<string, { wiki: string; index: number; alt: string; file?: string; prefer?: string }> = {
   hero: { wiki: "Delonix_regia", index: 0, alt: "Gulmohar tree in full scarlet bloom", file: "File:Royal Poinciana.jpg" },

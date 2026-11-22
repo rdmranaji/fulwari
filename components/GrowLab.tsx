@@ -101,7 +101,7 @@ export default function GrowLab() {
           <div className="wrap j-cap">
             <AnimatePresence mode="wait">
               <motion.div key={sp + cur.key} initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.5 }}>
-                <div className="chap-t">Stage {idx + 1} of {shown.length} · {cur.label}</div>
+                <div className="chap-t">Stage {idx + 1} of {shown.length} · {cur.label}{photo(`lab:${sp}:${cur.key}`)?.generic ? " · typical example" : ""}</div>
                 <p className="j-text">{cur.text}</p>
               </motion.div>
             </AnimatePresence>
