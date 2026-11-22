@@ -12,7 +12,7 @@ const UA = process.env.PHOTO_USER_AGENT || "FulwariWebsiteBuild/1.0 (+https://gi
 const OK_LICENCE = /^(cc[ -]by|cc0|public domain|pd)/i;
 const SKIP = /(map|distribution|range|diagram|illustration|drawing|köhler|kohler|botanical|herbarium|stamp|logo|icon|svg|chart|\.png$|\.gif$|\.tif)/i;
 // close-ups and oddities that don't sell a plant
-const AVOID = /(bark|pollen|grain|boulder|comparison|\bbud\b|\bnight\b|wood|stem section|cross.?section|orchid|leaf scar|fully opened|seeds?\b|seedpod|pods?\b|insect|caterpillar|beetle|disease|close-?up|leaves|yellow poinciana|peltophorum|gall)/i;
+const AVOID = /(bark|pollen|grain|boulder|comparison|\bbud\b|\bnight\b|wood|stem section|cross.?section|orchid|leaf scar|fully opened|seeds?\b|seedpod|pods?\b|insect|caterpillar|beetle|disease|close-?up|leaves|yellow poinciana|peltophorum|gall|swallowtail|papilio|butterfl|blanco|plate)/i;
 
 const src = await fs.readFile(path.join(ROOT, "lib", "photos.ts"), "utf8");
 const slots = [...src.matchAll(/"?([\w-]+)"?:\s*\{\s*wiki:\s*"([^"]+)",\s*index:\s*(\d+),\s*alt:\s*"([^"]+)"([^}]*)\}/g)]
@@ -20,10 +20,10 @@ const slots = [...src.matchAll(/"?([\w-]+)"?:\s*\{\s*wiki:\s*"([^"]+)",\s*index:
 const PRODUCT = new Set(["neem", "gulmohar", "karanj", "kesar-mango", "chikoo", "areca-palm", "foxtail-palm", "bougainvillea", "hibiscus", "ixora", "golden-duranta", "snake-plant"]);
 
 const get = async (url) => {
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < 6; i++) {
     const r = await fetch(url, { headers: { "User-Agent": UA, "Api-User-Agent": UA } });
     if (r.ok) return r;
-    if (r.status === 429 || r.status >= 500) { await new Promise((s) => setTimeout(s, 1500 * (i + 1))); continue; }
+    if (r.status === 429 || r.status >= 500) { await new Promise((s) => setTimeout(s, 3000 * (i + 1))); continue; }
     throw new Error(`${r.status} ${url}`);
   }
   throw new Error(`gave up ${url}`);
@@ -85,14 +85,17 @@ for (const s of slots) {
     }
     if (!PRODUCT.has(s.key)) picks.forEach((c) => used.add(c.file));
     result[s.key] = [];
-    for (let i = 0; i < picks.length; i++) {
-      const c = picks[i];
-      const name = `${s.key}${i ? "-" + i : ""}`;
+    for (const c of picks) {
+      const name = `${s.key}${result[s.key].length ? "-" + result[s.key].length : ""}`;
       const sm = c.thumb.replace(/\/1600px-/, "/800px-");
-      await download(c.thumb, path.join(OUT, `${name}.jpg`));
-      await download(sm, path.join(OUT, `${name}-sm.jpg`)).catch(() => fs.copyFile(path.join(OUT, `${name}.jpg`), path.join(OUT, `${name}-sm.jpg`)));
+      try {
+        await download(c.thumb, path.join(OUT, `${name}.jpg`));
+        await download(sm, path.join(OUT, `${name}-sm.jpg`)).catch(() => fs.copyFile(path.join(OUT, `${name}.jpg`), path.join(OUT, `${name}-sm.jpg`)));
+      } catch (e) { console.warn(`  skipped ${c.file}: ${e.message.slice(0, 80)}`); continue; }
       result[s.key].push({ src: `/photos/${name}.jpg`, srcSm: `/photos/${name}-sm.jpg`, w: c.w, h: c.h, alt: s.alt, credit: c.credit, license: c.license, page: c.page });
+      await new Promise((r) => setTimeout(r, 400));
     }
+    if (!result[s.key].length) { delete result[s.key]; throw new Error("all downloads failed"); }
     ok++; console.log(`✓ ${s.key} ← ${picks.map((p) => p.file).join(", ")}`);
   } catch (e) { fail++; console.warn(`✗ ${s.key}: ${e.message}`); }
 }
