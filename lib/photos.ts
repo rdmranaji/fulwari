@@ -6,16 +6,16 @@ import generated from "./photos.generated.json";
 
 export type Photo = { src: string; srcSm: string; w: number; h: number; alt: string; credit: string; license: string; page: string };
 
-export const PHOTO_SLOTS: Record<string, { wiki: string; index: number; alt: string }> = {
-  hero: { wiki: "Delonix_regia", index: 1, alt: "Gulmohar tree in full scarlet bloom" },
+export const PHOTO_SLOTS: Record<string, { wiki: string; index: number; alt: string; file?: string; prefer?: string }> = {
+  hero: { wiki: "Delonix_regia", index: 0, alt: "Gulmohar tree in full scarlet bloom", file: "File:Royal Poinciana.jpg" },
   "story-seed": { wiki: "Seed", index: 0, alt: "Seeds" },
-  "story-sprout": { wiki: "Seedling", index: 0, alt: "A young seedling" },
-  "story-nursery": { wiki: "Plant_nursery", index: 0, alt: "Rows of young plants in a nursery" },
-  "story-planting": { wiki: "Tree_planting", index: 0, alt: "Planting a young tree" },
-  "story-bloom": { wiki: "Delonix_regia", index: 2, alt: "Gulmohar canopy in flower" },
-  "door-b2b": { wiki: "Plant_nursery", index: 1, alt: "Nursery stock ready for dispatch" },
-  "door-b2c": { wiki: "Bougainvillea", index: 1, alt: "Bougainvillea in bloom" },
-  visit: { wiki: "Plant_nursery", index: 2, alt: "Walking through a plant nursery" },
+  "story-sprout": { wiki: "Seedling", index: 0, alt: "A young seedling", prefer: "seedling|sprout|germinat" },
+  "story-nursery": { wiki: "Plant_nursery", index: 0, alt: "Rows of young plants in a nursery", file: "File:Cutchogue - Oregon Road - Plant Nursery.jpg" },
+  "story-planting": { wiki: "Tree_planting", index: 0, alt: "Planting a young tree", prefer: "planting|plant" },
+  "story-bloom": { wiki: "Delonix_regia", index: 0, alt: "Gulmohar canopy in flower", prefer: "flower|bloom|blossom|tree|gulmohar|flame" },
+  "door-b2b": { wiki: "Tree_planting", index: 0, alt: "A large tree-planting drive", file: "File:Tree planting Ghana 2.jpg" },
+  "door-b2c": { wiki: "Bougainvillea", index: 0, alt: "Bougainvillea in bloom", file: "File:Pink paperflowers (Bougainvillea glabra).jpg" },
+  visit: { wiki: "Plant_nursery", index: 0, alt: "Walking through a plant nursery", prefer: "nursery|greenhouse|garden cent" },
   // products: index 0..2 are used for the gallery
   neem: { wiki: "Azadirachta_indica", index: 0, alt: "Neem tree" },
   gulmohar: { wiki: "Delonix_regia", index: 0, alt: "Gulmohar" },
