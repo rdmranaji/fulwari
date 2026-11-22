@@ -11,12 +11,12 @@ export function Reveal({ children, delay = 0, y = 28, className, as = "div" }: {
   );
 }
 
-export function Counter({ to, suffix = "" }: { to: number; suffix?: string }) {
+export function Counter({ to, suffix = "", plain = false }: { to: number; suffix?: string; plain?: boolean }) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "-40px" });
-  const v = useMotionValue(0);
-  const txt = useTransform(v, (x) => Math.round(x).toLocaleString("en-IN") + suffix);
-  useEffect(() => { if (inView) { const c = animate(v, to, { duration: 1.6, ease: [0.2, 0.8, 0.2, 1] }); return () => c.stop(); } }, [inView, to, v]);
+  const v = useMotionValue(plain ? to : 0);
+  const txt = useTransform(v, (x) => (plain ? String(Math.round(x)) : Math.round(x).toLocaleString("en-IN")) + suffix);
+  useEffect(() => { if (inView && !plain) { const c = animate(v, to, { duration: 1.6, ease: [0.2, 0.8, 0.2, 1] }); return () => c.stop(); } }, [inView, to, v]);
   return <motion.span ref={ref}>{txt}</motion.span>;
 }
 

@@ -3,6 +3,7 @@ import "./globals.css";
 import { CartDrawer, Header } from "@/components/Header";
 import { Footer, WhatsAppFab } from "@/components/Footer";
 import { SITE } from "@/lib/site";
+import { SmoothScroll } from "@/components/SmoothScroll";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
@@ -30,6 +31,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </head>
       <body>
+        <SmoothScroll />
         <Header />
         <main id="main">{children}</main>
         <Footer />

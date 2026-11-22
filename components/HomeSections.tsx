@@ -59,7 +59,7 @@ export function Proof() {
     <section className="dark" style={{ paddingBottom: 80 }}>
       <div className="wrap">
         <div className="stats">
-          <div className="stat"><b><Counter to={2014} /></b><span className="mute">Growing plants since</span></div>
+          <div className="stat"><b><Counter to={2014} plain /></b><span className="mute">Growing plants since</span></div>
           <div className="stat"><b><Counter to={100} /></b><span className="mute">People on the nursery team</span></div>
           <div className="stat"><b><Counter to={2} /></b><span className="mute">Nurseries: Anand and Gandhidham</span></div>
           <div className="stat"><b>₹1L</b><span className="mute">Minimum bulk order, anywhere in India</span></div>
