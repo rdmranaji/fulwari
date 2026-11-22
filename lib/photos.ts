@@ -12,7 +12,7 @@ export const PHOTO_SLOTS: Record<string, { wiki: string; index: number; alt: str
   "story-sprout": { wiki: "Seedling", index: 0, alt: "A young seedling", prefer: "seedling|sprout|germinat" },
   "story-nursery": { wiki: "Plant_nursery", index: 0, alt: "Rows of young plants in a nursery", file: "File:Cutchogue - Oregon Road - Plant Nursery.jpg" },
   "story-planting": { wiki: "Tree_planting", index: 0, alt: "Planting a young tree", prefer: "planting|plant" },
-  "story-bloom": { wiki: "Delonix_regia", index: 0, alt: "Gulmohar canopy in flower", prefer: "flower|bloom|blossom|tree|gulmohar|flame" },
+  "story-bloom": { wiki: "Delonix_regia", index: 0, alt: "Gulmohar canopy in flower", prefer: "delonix|gulmohar|royal|flame|flamboyant" },
   "door-b2b": { wiki: "Tree_planting", index: 0, alt: "A large tree-planting drive", file: "File:Tree planting Ghana 2.jpg" },
   "door-b2c": { wiki: "Bougainvillea", index: 0, alt: "Bougainvillea in bloom", file: "File:Pink paperflowers (Bougainvillea glabra).jpg" },
   visit: { wiki: "Plant_nursery", index: 0, alt: "Walking through a plant nursery", prefer: "nursery|greenhouse|garden cent" },

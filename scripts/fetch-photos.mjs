@@ -12,7 +12,7 @@ const UA = process.env.PHOTO_USER_AGENT || "FulwariWebsiteBuild/1.0 (+https://gi
 const OK_LICENCE = /^(cc[ -]by|cc0|public domain|pd)/i;
 const SKIP = /(map|distribution|range|diagram|illustration|drawing|köhler|kohler|botanical|herbarium|stamp|logo|icon|svg|chart|\.png$|\.gif$|\.tif)/i;
 // close-ups and oddities that don't sell a plant
-const AVOID = /(bark|pollen|grain|boulder|comparison|\bbud\b|\bnight\b|wood|stem section|cross.?section|orchid|leaf scar|fully opened|seeds?\b|seedpod|pods?\b|insect|caterpillar|beetle|disease|close-?up|leaves)/i;
+const AVOID = /(bark|pollen|grain|boulder|comparison|\bbud\b|\bnight\b|wood|stem section|cross.?section|orchid|leaf scar|fully opened|seeds?\b|seedpod|pods?\b|insect|caterpillar|beetle|disease|close-?up|leaves|yellow poinciana|peltophorum|gall)/i;
 
 const src = await fs.readFile(path.join(ROOT, "lib", "photos.ts"), "utf8");
 const slots = [...src.matchAll(/"?([\w-]+)"?:\s*\{\s*wiki:\s*"([^"]+)",\s*index:\s*(\d+),\s*alt:\s*"([^"]+)"([^}]*)\}/g)]
@@ -54,7 +54,7 @@ async function candidates(wiki, seedSlot) {
   const k = wiki + (seedSlot ? "#seed" : "");
   if (mediaCache.has(k)) return mediaCache.get(k);
   const j = await (await get(`https://en.wikipedia.org/api/rest_v1/page/media-list/${encodeURIComponent(wiki)}`)).json();
-  const files = (j.items || []).filter((x) => x.type === "image" && /\.jpe?g$/i.test(x.title) && !SKIP.test(x.title) && (seedSlot || !AVOID.test(x.title))).map((x) => x.title);
+  const files = (j.items || []).filter((x) => x.type === "image" && /\.jpe?g$/i.test(x.title) && !SKIP.test(x.title) && (seedSlot || !AVOID.test(x.title.replace(/_/g, " ")))).map((x) => x.title);
   const out = await info(files);
   mediaCache.set(k, out);
   return out;
@@ -67,7 +67,7 @@ async function download(url, file) {
 
 await fs.mkdir(OUT, { recursive: true });
 const result = {};
-const used = new Set();
+const used = new Set(slots.filter((x) => x.file).map((x) => x.file.replace(/_/g, " ")));
 let ok = 0, fail = 0;
 for (const s of slots) {
   try {
@@ -79,6 +79,7 @@ for (const s of slots) {
       let list = await candidates(s.wiki, s.key === "story-seed");
       if (s.prefer) { const re = new RegExp(s.prefer, "i"); list = [...list.filter((c) => re.test(c.file)), ...list.filter((c) => !re.test(c.file))]; }
       if (!PRODUCT.has(s.key)) list = [...list.filter((c) => !used.has(c.file)), ...list.filter((c) => used.has(c.file))];
+      if (PRODUCT.has(s.key)) list = list.filter((c) => !/(bud|seed|flower cluster|fully opened)/i.test(c.file)).concat(list.filter((c) => /(bud|seed|flower cluster|fully opened)/i.test(c.file)));
       if (!list.length) throw new Error("no freely licensed photos");
       picks = PRODUCT.has(s.key) ? list.slice(0, 3) : [list[Math.min(s.index, list.length - 1)]];
     }
