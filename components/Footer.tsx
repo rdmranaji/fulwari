@@ -35,7 +35,7 @@ export function Footer() {
         <div className="legal">
           <span>© {new Date().getFullYear()} Fulwari · GST {SITE.gst} · {SITE.udyam}</span>
           <span>Preview build: prices, stock and plant lists are samples until Fulwari confirms them.</span>
-          <span><Link href="/credits">Photo credits</Link> · {t("foot.made", "Website by Global Web Guru")}</span>
+          <span><Link href="/credits">Photo credits</Link> · <a href="https://globalwebguru.com" target="_blank" rel="noopener">{t("foot.made", "Website by Global Web Guru")}</a></span>
         </div>
       </div>
     </footer>
